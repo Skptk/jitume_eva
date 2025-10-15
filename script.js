@@ -4,31 +4,126 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // ============================================
-    // NAVIGATION SCROLL EFFECT
+    // MOBILE NAVIGATION & SCROLL BEHAVIOR
     // ============================================
-    const navigation = document.querySelector('.navigation');
-    let lastScrollY = window.scrollY;
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+    const mobileNavClose = document.querySelector('.mobile-nav-close');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    let lastScrollY = 0;
     let ticking = false;
 
-    const handleNavigationScroll = () => {
-        if (lastScrollY > 100) {
-            navigation.classList.add('scrolled');
+    // Mobile Navigation Toggle
+    const toggleMobileNav = () => {
+        const isActive = hamburgerBtn.classList.contains('active');
+        
+        if (isActive) {
+            // Close mobile nav
+            hamburgerBtn.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            mobileNavOverlay.setAttribute('aria-hidden', 'true');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
         } else {
-            navigation.classList.remove('scrolled');
+            // Open mobile nav
+            hamburgerBtn.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            mobileNavOverlay.setAttribute('aria-hidden', 'false');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
         }
+    };
+
+    // Close mobile nav
+    const closeMobileNav = () => {
+        hamburgerBtn.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
+        mobileNavOverlay.setAttribute('aria-hidden', 'true');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    };
+
+    // Event Listeners
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', toggleMobileNav);
+    }
+
+    if (mobileNavClose) {
+        mobileNavClose.addEventListener('click', closeMobileNav);
+    }
+
+    // Close mobile nav when clicking overlay backdrop
+    if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileNavOverlay) {
+                closeMobileNav();
+            }
+        });
+    }
+
+    // Close mobile nav when clicking nav links
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            setTimeout(() => {
+                closeMobileNav();
+                // Also trigger smooth scroll after closing menu
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const targetId = href.substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        const navHeight = document.querySelector('.navigation').offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }, 150); // Small delay for visual feedback
+        });
+    });
+
+    // Navigation Scroll Behavior
+    const handleNavigationScroll = () => {
+        const currentScrollY = window.scrollY;
+        const navigation = document.querySelector('.navigation');
+        
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            // Scrolling down - hide nav
+            navigation.classList.add('hidden');
+        } else {
+            // Scrolling up - show nav
+            navigation.classList.remove('hidden');
+        }
+        
+        lastScrollY = currentScrollY;
         ticking = false;
     };
 
     window.addEventListener('scroll', () => {
-        lastScrollY = window.scrollY;
         if (!ticking) {
             window.requestAnimationFrame(handleNavigationScroll);
             ticking = true;
         }
     }, { passive: true });
 
+    // Close mobile nav on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNavOverlay.classList.contains('active')) {
+            closeMobileNav();
+        }
+    });
+
+    // Prevent scroll when mobile nav is open
+    if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+    }
+    
     // ============================================
     // SMOOTH SCROLLING FOR NAVIGATION LINKS
     // ============================================

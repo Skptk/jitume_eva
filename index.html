@@ -22,7 +22,6 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     
     <!-- Preload critical assets -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" as="style">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     
@@ -44,19 +43,57 @@
     <!-- Navigation -->
     <nav class="navigation">
         <div class="nav-container">
-            <a href="#about" class="nav-link">ABOUT</a>
-            <a href="#services" class="nav-link">SERVICES</a>
+            <!-- Desktop Navigation -->
+            <a href="#about" class="nav-link desktop-only">ABOUT</a>
+            <a href="#services" class="nav-link desktop-only">SERVICES</a>
             <div class="logo">
                 <img src="assets/apple-touch-icon.png" alt="EVA Logo" class="logo-image" loading="eager">
             </div>
-            <a href="#process" class="nav-link">PROCESS</a>
-            <a href="#contact" class="nav-link">CONTACT</a>
+            <a href="#process" class="nav-link desktop-only">PROCESS</a>
+            <a href="#contact" class="nav-link desktop-only">CONTACT</a>
+
+            <!-- Mobile Hamburger Menu Button -->
+            <button class="hamburger-btn mobile-only" aria-label="Open navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Overlay -->
+        <div class="mobile-nav-overlay mobile-only" aria-hidden="true">
+            <div class="mobile-nav-content">
+                <div class="mobile-nav-header">
+                    <div class="mobile-logo">
+                        <img src="assets/apple-touch-icon.png" alt="EVA Logo" class="logo-image">
+                    </div>
+                    <button class="mobile-nav-close" aria-label="Close navigation menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <nav class="mobile-nav-links">
+                    <a href="#about" class="mobile-nav-link">ABOUT</a>
+                    <a href="#services" class="mobile-nav-link">SERVICES</a>
+                    <a href="#process" class="mobile-nav-link">PROCESS</a>
+                    <a href="#contact" class="mobile-nav-link">CONTACT</a>
+                </nav>
+                <div class="mobile-nav-footer">
+                    <a href="mailto:info@jitumevas.com" class="mobile-contact-link">info@jitumevas.com</a>
+                    <a href="https://linkedin.com/company/jitumevas" target="_blank" rel="noopener noreferrer" class="mobile-contact-link">LinkedIn</a>
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="circle-container">
+            <div class="profile-image-container">
+                <img src="assets/profile-photo.webp" alt="Professional Profile Photo" class="profile-image" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4DD4D4, #FFD700)';">
+            </div>
             <svg class="circle-pattern" viewBox="0 0 400 400">
                 <defs>
                     <pattern id="diagonalLines" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
@@ -68,7 +105,7 @@
         </div>
         
         <div class="hero-text">
-            <p class="hero-label">UNIVERSITY</p>
+            <p class="hero-label">YOUR_NAME</p>
             <h1 class="hero-title">EXECUTIVE VIRTUAL ASSISTANT</h1>
             <p class="hero-subtitle">PROFESSIONAL BUSINESS SUPPORT</p>
         </div>
