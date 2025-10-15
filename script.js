@@ -74,12 +74,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     const targetId = href.substring(1);
                     const targetElement = document.getElementById(targetId);
                     if (targetElement) {
+                        // Anchor exists on current page, scroll to it
                         const navHeight = document.querySelector('.navigation').offsetHeight;
                         const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
                         window.scrollTo({
                             top: targetPosition,
                             behavior: 'smooth'
                         });
+                    } else {
+                        // Anchor doesn't exist on current page, redirect to home page with hash
+                        const currentPath = window.location.pathname;
+                        const isOnSubpage = currentPath !== '/' && !currentPath.endsWith('index.html');
+                        
+                        if (isOnSubpage) {
+                            // Redirect to home page with the hash
+                            window.location.href = `index.html${href}`;
+                        }
                     }
                 }
             }, 150); // Small delay for visual feedback
@@ -139,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const targetElement = document.getElementById(targetId);
                 
                 if (targetElement) {
+                    // Anchor exists on current page, scroll to it
                     const navHeight = navigation.offsetHeight;
                     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
                     
@@ -146,6 +157,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         top: targetPosition,
                         behavior: 'smooth'
                     });
+                } else {
+                    // Anchor doesn't exist on current page, redirect to home page with hash
+                    const currentPath = window.location.pathname;
+                    const isOnSubpage = currentPath !== '/' && !currentPath.endsWith('index.html');
+                    
+                    if (isOnSubpage) {
+                        // Redirect to home page with the hash
+                        window.location.href = `index.html${href}`;
+                    }
                 }
             }
         });
@@ -351,6 +371,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         packageSelect.value = packageValue;
                     }
                 }, 500);
+            } else {
+                // Contact section doesn't exist on current page, redirect to home page
+                const currentPath = window.location.pathname;
+                const isOnSubpage = currentPath !== '/' && !currentPath.endsWith('index.html');
+                
+                if (isOnSubpage) {
+                    // Redirect to home page with contact hash
+                    window.location.href = 'index.html#contact';
+                }
             }
         });
     });
