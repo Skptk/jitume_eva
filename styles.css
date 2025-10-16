@@ -108,7 +108,7 @@ body {
 .logo {
     width: 50px;
     height: 50px;
-    background: var(--gradient-radiant);
+    background: #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1499,7 +1499,8 @@ textarea:focus-visible {
     .service-card,
     .testimonial-card,
     .package-card,
-    .tool-category {
+    .tool-category,
+    .tool-card {
         padding: 2rem 1.5rem;
     }
     
@@ -1511,8 +1512,7 @@ textarea:focus-visible {
     .testimonials,
     .metrics,
     .packages,
-    .faq,
-    .contact-form-section {
+    .faq {
         padding: 4rem 0;
     }
     
@@ -1525,21 +1525,24 @@ textarea:focus-visible {
     }
 }
 
+/* Large Desktop screens */
+@media (min-width: 1400px) {
+    .tools-grid-modern {
+        grid-template-columns: repeat(8, 1fr);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .section-container {
-        padding: 0 2rem;
-    }
-    
     .nav-container {
         gap: 2rem;
         padding: 0 2rem;
     }
     
     .tools-categories,
-    .packages-grid,
-    .testimonials-carousel {
-        grid-template-columns: repeat(2, 1fr);
+    .tools-grid-modern,
+    .packages-grid {
+        grid-template-columns: repeat(5, 1fr);
     }
     
     .metrics-grid {
@@ -1584,10 +1587,6 @@ textarea:focus-visible {
 }
 
 @media (max-width: 768px) {
-    .section-container {
-        padding: 0 1.5rem;
-    }
-    
     .nav-container {
         gap: 1rem;
         padding: 0 1.5rem;
@@ -1640,14 +1639,26 @@ textarea:focus-visible {
         gap: 2rem;
     }
     
-    .services-grid,
-    .process-timeline,
-    .tools-categories,
-    .testimonials-carousel,
-    .packages-grid,
-    .metrics-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+    .tools-grid-modern {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .tool-card {
+        padding: 1.25rem 0.75rem;
+        min-height: 160px;
+    }
+
+    .tool-icon {
+        font-size: 2rem;
+    }
+
+    .tool-name {
+        font-size: 1rem;
+    }
+
+    .tool-description {
+        font-size: 0.8rem;
     }
     
     .package-card.featured {
@@ -1727,6 +1738,12 @@ textarea:focus-visible {
         width: 40px;
         height: 40px;
         margin: 0.5rem 0;
+    }
+
+    /* Show 2 columns on very small screens for better readability */
+    .tools-grid-modern {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 }
 
