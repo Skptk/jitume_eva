@@ -734,10 +734,67 @@ body {
     margin-bottom: 4rem;
 }
 
-.tools-categories {
+.tools-grid-modern {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
+}
+
+.tool-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    border-color: var(--color-navy);
+}
+
+.tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-radiant);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.tool-card:hover::before {
+    transform: scaleX(1);
+}
+
+.tool-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.tool-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.tool-description {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    flex-grow: 1;
 }
 
 .tool-category {
