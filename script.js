@@ -342,21 +342,80 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.getComputedStyle(section).opacity === '0') {
                 section.style.opacity = '1';
                 section.style.transform = 'none';
+                section.style.transition = 'none';
                 console.log('Applied fallback visibility for section:', section.id || section.className);
             }
         });
-    }, 1000);
+    }, 100);
 
     // ============================================
-    // CARD HOVER EFFECTS
+    // TOOLS CAROUSEL FUNCTIONALITY
     // ============================================
-    const cards = document.querySelectorAll('.service-card, .testimonial-card, .package-card');
-    
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transition = 'all 0.3s ease';
+    const toolsTrack = document.getElementById('toolsTrack');
+    const toolsTrackSecond = document.getElementById('toolsTrackSecond');
+
+    if (toolsTrack) {
+        const toolItems = toolsTrack.querySelectorAll('.tool-item');
+        const itemWidth = 140; // 120px min-width + 20px gap
+        const visibleItems = Math.floor(toolsTrack.parentElement.offsetWidth / itemWidth);
+        const totalItems = toolItems.length;
+        let currentIndex = 0;
+        let autoScrollInterval;
+        let isHovering = false;
+
+        function updateCarousel() {
+            const maxIndex = Math.max(0, totalItems - visibleItems);
+            currentIndex = Math.min(currentIndex, maxIndex);
+
+            const translateX = -currentIndex * itemWidth;
+            toolsTrack.style.transform = `translateX(${translateX}px)`;
+        }
+
+        function startAutoScroll() {
+            const speed = isHovering ? 1000 : 3000; // Faster when hovering
+            autoScrollInterval = setInterval(() => {
+                const maxIndex = Math.max(0, totalItems - visibleItems);
+                if (currentIndex < maxIndex) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                }
+                updateCarousel();
+            }, speed);
+        }
+
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+
+        // Speed up on hover instead of pausing
+        toolsTrack.parentElement.addEventListener('mouseenter', () => {
+            isHovering = true;
+            stopAutoScroll();
+            startAutoScroll();
         });
-    });
+
+        toolsTrack.parentElement.addEventListener('mouseleave', () => {
+            isHovering = false;
+            stopAutoScroll();
+            startAutoScroll();
+        });
+
+        // Start auto-scroll
+        startAutoScroll();
+
+        // Update on window resize
+        window.addEventListener('resize', updateCarousel);
+
+        // Initial setup
+        updateCarousel();
+    }
+
+    // Second carousel auto-animates with CSS
+    if (toolsTrackSecond) {
+        // The second carousel uses CSS animation for continuous scrolling
+        // No JavaScript interaction needed for this one
+    }
 
     // ============================================
     // PACKAGE BUTTONS
@@ -399,28 +458,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = 'index.html#contact';
                 }
             }
-        });
-    });
-
-    // ============================================
-    // ACCESSIBILITY IMPROVEMENTS
-    // ============================================
-    
-    // Add keyboard navigation for FAQ
-    faqQuestions.forEach(question => {
-        question.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.click();
-            }
-        });
-    });
-
-    // Focus management for forms
-    const formInputs = document.querySelectorAll('input, textarea, select');
-    formInputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.style.transition = 'all 0.3s ease';
         });
     });
 
@@ -552,46 +589,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
     console.log('%c👋 Welcome to EVA Website!', 'font-size: 20px; color: #e63946; font-weight: bold;');
     console.log('%cLooking for a Virtual Assistant? Let\'s connect!', 'font-size: 14px; color: #1a2747;');
-});
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
 
-// Debounce function for performance
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
+    // Debounce function for performance
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
             clearTimeout(timeout);
-            func(...args);
+            timeout = setTimeout(later, wait);
         };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+    }
 
-// Throttle function for scroll events
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-}
+    // Throttle function for scroll events
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
 
-// Check if element is in viewport
-function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
+    // Check if element is in viewport
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+});
