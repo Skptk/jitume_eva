@@ -1,0 +1,73 @@
+name: Deploy to Netlify & Lighthouse CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    name: Lighthouse CI
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: './lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Netlify
+    needs: lighthouse
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: './'
+          production-deploy: ${{ github.ref == 'refs/heads/main' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deployed via GitHub Actions"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Comment PR with Lighthouse Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            // Read Lighthouse results if available
+            let comment = '## 🚀 Lighthouse CI Results\n\n';
+
+            try {
+              const resultsPath = path.join(process.cwd(), 'lhci_reports', 'manifest.json');
+              if (fs.existsSync(resultsPath)) {
+                const manifest = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+                comment += '✅ Lighthouse CI completed successfully!\n\n';
+                comment += '📊 **Performance Score:** ' + (manifest.summary || 'N/A') + '\n';
+                comment += '🔗 [View Full Report](https://storage.googleapis.com/lighthouse-ci.appspot.com/reports/' + manifest.id + ')';
+              } else {
+                comment += '⚠️ Lighthouse CI results not available.';
+              }
+            } catch (error) {
+              comment += '⚠️ Could not read Lighthouse results: ' + error.message;
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

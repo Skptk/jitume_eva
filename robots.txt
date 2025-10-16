@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://jitumeva.netlify.app/sitemap.xml
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Disallow common sensitive paths (though not present on this site)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_internal/
+Disallow: /node_modules/
+
+# Allow important pages
+Allow: /
+Allow: /privacy.html
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.svg
+Allow: /*.webp

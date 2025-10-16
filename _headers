@@ -1,0 +1,57 @@
+# Static assets with long-term caching
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML files with short-term caching
+*.html
+  Cache-Control: public, max-age=3600
+
+# CSS and JS with medium-term caching
+*.css
+  Cache-Control: public, max-age=86400
+
+*.js
+  Cache-Control: public, max-age=86400
+
+# Images with long-term caching
+*.png
+  Cache-Control: public, max-age=31536000
+
+*.jpg
+  Cache-Control: public, max-age=31536000
+
+*.jpeg
+  Cache-Control: public, max-age=31536000
+
+*.svg
+  Cache-Control: public, max-age=31536000
+
+*.webp
+  Cache-Control: public, max-age=31536000
+
+*.ico
+  Cache-Control: public, max-age=31536000
+
+# Fonts with long-term caching
+*.woff
+  Cache-Control: public, max-age=31536000
+
+*.woff2
+  Cache-Control: public, max-age=31536000
+
+*.ttf
+  Cache-Control: public, max-age=31536000
+
+*.otf
+  Cache-Control: public, max-age=31536000
+
+# Security headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Force HTTPS
+/*
+  X-Forwarded-Proto: https

@@ -272,7 +272,8 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             
             try {
-                // Replace [your-form-id] with actual Formspree ID after signup at formspree.io
+                // IMPORTANT: Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
+                // Get your form ID from https://formspree.io/ after creating a form
                 const response = await fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
                     method: 'POST',
                     headers: {
@@ -295,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Sorry, there was an error sending your message. Please email info@jitumevas.com directly.');
+                alert('Sorry, there was an error sending your message. Please email nairobistonks@gmail.com directly.');
             } finally {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
@@ -355,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (toolsTrack) {
         const toolItems = toolsTrack.querySelectorAll('.tool-item');
-        const itemWidth = 140; // 120px min-width + 20px gap
+        const itemWidth = 152; // 120px min-width + 32px gap (2rem)
         const visibleItems = Math.floor(toolsTrack.parentElement.offsetWidth / itemWidth);
         const totalItems = toolItems.length;
         let currentIndex = 0;
@@ -370,8 +371,13 @@ document.addEventListener('DOMContentLoaded', function() {
             toolsTrack.style.transform = `translateX(${translateX}px)`;
         }
 
+        // Detect if user is on mobile/touch device for performance optimization
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
         function startAutoScroll() {
-            const speed = isHovering ? 1000 : 3000; // Faster when hovering
+            // Slower speed on mobile for better performance and battery life
+            const baseSpeed = isTouchDevice ? 1500 : 1000; // 1.5s on mobile, 1s on desktop
+            const speed = isHovering ? Math.max(300, baseSpeed - 500) : baseSpeed; // Faster when hovering but not too fast on mobile
             autoScrollInterval = setInterval(() => {
                 const maxIndex = Math.max(0, totalItems - visibleItems);
                 if (currentIndex < maxIndex) {

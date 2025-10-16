@@ -1,0 +1,111 @@
+{
+  "project": {
+    "name": "JITUME Executive Virtual Assistant Portfolio",
+    "repo": "jitume_eva",
+    "environment": "windsurf",
+    "context_tokens": 1000000
+  },
+  "intent": "Perform full-spectrum optimization, validation, and deployment finalization of the JITUME portfolio website.",
+  "objectives": [
+    "Complete all pending deployment steps (Formspree ID, canonical domain, analytics).",
+    "Raise Lighthouse scores to 95+ across all categories.",
+    "Automate build, lint, and deploy workflow using Windsurf pipelines.",
+    "Implement scalable structure with maintainable modular CSS/JS.",
+    "Generate verifiable before/after optimization report."
+  ],
+  "phases": [
+    {
+      "name": "Phase 1: Codebase Audit",
+      "agents": ["auditor", "seo_expert", "accessibility_checker"],
+      "actions": [
+        "Run HTMLHint, Stylelint, and ESLint across all files.",
+        "Perform Lighthouse and WAVE accessibility scans.",
+        "Detect and list all unused CSS selectors and JS imports.",
+        "Check for missing schema markup, OpenGraph, and canonical tags.",
+        "Produce audit.json summary with error severity scoring."
+      ],
+      "outputs": ["audit.json", "recommendations.md"]
+    },
+    {
+      "name": "Phase 2: Optimization and Refactor",
+      "agents": ["frontend_engineer", "performance_optimizer"],
+      "dependencies": ["audit.json"],
+      "actions": [
+        "Minify HTML, CSS, and JS (preserve readability comments).",
+        "Bundle JS using ESBuild or Rollup with tree-shaking.",
+        "Apply image optimization pipeline (WebP + AVIF).",
+        "Implement service worker for caching and offline support.",
+        "Add modular structure for animations (GSAP controllers).",
+        "Throttle scroll/animation listeners for better mobile FPS."
+      ],
+      "commit_policy": "create new branch 'optimization-phase'"
+    },
+    {
+      "name": "Phase 3: SEO, Accessibility, and Analytics",
+      "agents": ["seo_specialist", "a11y_tester"],
+      "dependencies": ["optimization-phase"],
+      "actions": [
+        "Ensure all meta tags and schema.org structured data are present.",
+        "Add Twitter Card and OpenGraph data for sharing.",
+        "Integrate Google Analytics (GA4) with consent banner.",
+        "Run WCAG AA validation and patch any missing aria roles.",
+        "Generate sitemap.xml and robots.txt dynamically."
+      ]
+    },
+    {
+      "name": "Phase 4: Form & Integration Finalization",
+      "agents": ["integration_engineer"],
+      "actions": [
+        "Inject provided Formspree ID into contact form.",
+        "Validate async submission flow (success/failure).",
+        "Add honeypot and timeout-based spam defense.",
+        "Ensure visual feedback for loading, success, and error states."
+      ],
+      "variables": {
+        "FORMSPREE_ID": "REPLACE_WITH_VALID_ID"
+      }
+    },
+    {
+      "name": "Phase 5: Deployment Pipeline",
+      "agents": ["devops", "security_auditor"],
+      "actions": [
+        "Create GitHub Actions CI/CD pipeline (lint + build + deploy).",
+        "Add pre-deploy checks: link integrity, broken assets, console errors.",
+        "Configure hosting (Netlify or Vercel) with enforced HTTPS and redirect rules.",
+        "Enable versioned static assets and cache busting.",
+        "Integrate Sentry for runtime error tracking."
+      ],
+      "commit_policy": "merge to main after CI success"
+    },
+    {
+      "name": "Phase 6: Validation and Reporting",
+      "agents": ["qa_analyst", "reporter"],
+      "actions": [
+        "Run post-deploy Lighthouse audit.",
+        "Compare performance and bundle size deltas.",
+        "Validate form functionality on live domain.",
+        "Export final_report.json summarizing improvements.",
+        "Generate CHANGELOG.md with timestamps."
+      ],
+      "success_criteria": {
+        "performance_score": ">=95",
+        "accessibility_score": ">=95",
+        "seo_score": ">=95",
+        "form_submission_success": true,
+        "deployment_status": "Live with valid SSL"
+      }
+    }
+  ],
+  "supervision": {
+    "auto_commit": true,
+    "human_approval_stages": ["Phase 2", "Phase 5"],
+    "rollback_on_failure": true,
+    "report_to_console": true
+  },
+  "deliverables": [
+    "optimized_source.zip",
+    "audit.json",
+    "final_report.json",
+    "CHANGELOG.md"
+  ]
+}
