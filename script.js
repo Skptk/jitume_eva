@@ -320,14 +320,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, fadeInObserverOptions);
     
-    // Apply fade-in to sections
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        fadeInObserver.observe(section);
-    });
+    // Apply fade-in to sections only if IntersectionObserver is supported
+    if ('IntersectionObserver' in window) {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            // Set initial state for animation
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            fadeInObserver.observe(section);
+        });
+    } else {
+        // Fallback: Ensure sections are visible if IntersectionObserver is not supported
+        console.log('IntersectionObserver not supported - showing sections immediately');
+    }
+    
+    // Additional fallback: Ensure critical sections are visible after a short delay
+    setTimeout(() => {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            if (window.getComputedStyle(section).opacity === '0') {
+                section.style.opacity = '1';
+                section.style.transform = 'none';
+                console.log('Applied fallback visibility for section:', section.id || section.className);
+            }
+        });
+    }, 1000);
 
     // ============================================
     // CARD HOVER EFFECTS
@@ -418,11 +436,14 @@ document.addEventListener('DOMContentLoaded', function() {
             element.style.animation = 'none';
         });
         
-        // Show all sections immediately
-        sections.forEach(section => {
-            section.style.opacity = '1';
-            section.style.transform = 'none';
-        });
+        // Show all sections immediately (don't rely on IntersectionObserver for visibility)
+        if ('IntersectionObserver' in window) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.style.opacity = '1';
+                section.style.transform = 'none';
+            });
+        }
     }
 
     // ============================================
