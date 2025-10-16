@@ -352,7 +352,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // TOOLS CAROUSEL FUNCTIONALITY
     // ============================================
     const toolsTrack = document.getElementById('toolsTrack');
-    const toolsTrackSecond = document.getElementById('toolsTrackSecond');
 
     if (toolsTrack) {
         const toolItems = toolsTrack.querySelectorAll('.tool-item');
@@ -409,12 +408,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Initial setup
         updateCarousel();
-    }
-
-    // Second carousel auto-animates with CSS
-    if (toolsTrackSecond) {
-        // The second carousel uses CSS animation for continuous scrolling
-        // No JavaScript interaction needed for this one
     }
 
     // ============================================
