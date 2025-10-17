@@ -1,22 +1,22 @@
-# Static assets with long-term caching
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# HTML files with short-term caching
 *.html
   Cache-Control: public, max-age=3600
 
-# CSS files with content type and caching
 *.css
   Content-Type: text/css; charset=utf-8
   Cache-Control: public, max-age=31536000
 
-# JavaScript files with content type and caching
 *.js
   Content-Type: application/javascript; charset=utf-8
   Cache-Control: public, max-age=31536000
 
-# Font files with content type and caching
 *.woff2
   Content-Type: font/woff2
   Cache-Control: public, max-age=31536000, immutable
@@ -24,9 +24,3 @@
 *.woff
   Content-Type: font/woff
   Cache-Control: public, max-age=31536000, immutable
-
-# Security and performance headers for all pages
-/*
-  X-Frame-Options: SAMEORIGIN
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
