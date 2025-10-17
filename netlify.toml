@@ -9,3 +9,5 @@
 [build.environment]
   # Node.js version for any build processes
   NODE_VERSION = "18"
+
+# Force rebuild - updated configuration
