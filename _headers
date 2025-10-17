@@ -9,11 +9,6 @@ http://jitumeva.netlify.app/*
   Location: https://jitumeva.netlify.app/:splat
   Status: 301
 
-# SPA fallback - serve index.html for non-existent paths
-/*
-  Location: /index.html
-  Status: 200
-
 # Static assets with long-term caching
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
