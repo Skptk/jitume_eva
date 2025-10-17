@@ -50,7 +50,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=BBH+Sans+Bartle:wght@400;700&family=BBH+Sans+Hegarty:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
@@ -58,9 +58,47 @@
 <body>
     
     <!-- Page Loader -->
-    <div id="page-loader" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, #FFC700, #FF8C42, #E91E92);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity 0.5s, visibility 0.5s;">
-        <div style="color:white;font-family:Inter,sans-serif;font-size:1.5rem;font-weight:700;">JITUME</div>
+    <div id="page-loader" style="position:fixed;top:0;left:0;width:100%;height:100%;background:var(--gradient-hero);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity 0.5s, visibility 0.5s;backdrop-filter:var(--blur-glass);">
+        <div style="color:var(--color-white);font-family:var(--font-sans);font-size:1.5rem;font-weight:700;backdrop-filter:var(--blur-glass-light);background:var(--color-glass-bg);padding:1rem 2rem;border-radius:var(--radius-lg);border:1px solid var(--color-glass-border);box-shadow:var(--shadow-glass);">JITUME</div>
     </div>
+
+    <script>
+        // Immediate fallback - remove loader after 3 seconds max
+        setTimeout(() => {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                console.log('Fallback: Removing loader after timeout');
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                setTimeout(() => loader.remove(), 500);
+            }
+        }, 3000);
+
+        // Main loader removal on page load
+        window.addEventListener('load', () => {
+            console.log('Page loaded, removing loader...');
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                setTimeout(() => loader.remove(), 500);
+            }
+        });
+
+        // Also try on DOM ready as backup
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM ready, checking loader...');
+            setTimeout(() => {
+                const loader = document.getElementById('page-loader');
+                if (loader && loader.style.opacity !== '0') {
+                    console.log('Backup: Removing loader on DOM ready');
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                    setTimeout(() => loader.remove(), 500);
+                }
+            }, 1000);
+        });
+    </script>
     
     <!-- Navigation -->
     <nav class="navigation">
@@ -533,160 +571,218 @@
             <h2 class="section-title-center-white">BY THE NUMBERS</h2>
             <div class="metrics-grid">
                 <div class="metric-item">
-                    <div class="metric-number" data-target="15">0</div>
+                    <div class="metric-number" data-target="15">15</div>
                     <div class="metric-label">EXECUTIVES SUPPORTED</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-number" data-target="5">0</div>
+                    <div class="metric-number" data-target="5">5</div>
                     <div class="metric-label">YEARS EXPERIENCE</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-number" data-target="95">0</div>
+                    <div class="metric-number" data-target="95">95</div>
                     <div class="metric-label">CLIENT RETENTION</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-number" data-target="200">0</div>
+                    <div class="metric-number" data-target="200">200</div>
                     <div class="metric-label">HOURS SAVED MONTHLY</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Packages Section -->
-    <section class="packages">
+    <!-- My Work Section -->
+    <section class="portfolio">
         <div class="section-container">
-            <h2 class="section-title-center">WORK WITH ME</h2>
-            <p class="section-subtitle">Flexible packages designed for different business needs</p>
-            
-            <div class="packages-grid">
-                <div class="package-card">
-                    <div class="package-badge">ESSENTIAL</div>
-                    <h3 class="package-title">ESSENTIAL SUPPORT</h3>
-                    <div class="package-hours">20 hours/month</div>
-                    <div class="package-best-for">Entrepreneurs & solopreneurs</div>
-                    <ul class="package-features">
-                        <li>Email & calendar management</li>
-                        <li>Basic task coordination</li>
-                        <li>Response time: 24 hours</li>
-                    </ul>
-                    <button class="package-cta">Get Started</button>
-                </div>
-                
-                <div class="package-card featured">
-                    <div class="package-badge featured-badge">POPULAR</div>
-                    <h3 class="package-title">EXECUTIVE PARTNERSHIP</h3>
-                    <div class="package-hours">40 hours/month</div>
-                    <div class="package-best-for">Executives & small teams</div>
-                    <ul class="package-features">
-                        <li>Full executive support</li>
-                        <li>Project management</li>
-                        <li>Priority response time</li>
-                        <li>Monthly strategy calls</li>
-                    </ul>
-                    <button class="package-cta">Book Consultation</button>
-                </div>
-                
-                <div class="package-card">
-                    <div class="package-badge">ENTERPRISE</div>
-                    <h3 class="package-title">ENTERPRISE SOLUTION</h3>
-                    <div class="package-hours">Custom</div>
-                    <div class="package-best-for">Leadership teams</div>
-                    <ul class="package-features">
-                        <li>Dedicated support</li>
-                        <li>Team coordination</li>
-                        <li>Custom workflows</li>
-                        <li>Real-time availability</li>
-                    </ul>
-                    <button class="package-cta">Let's Talk</button>
-                </div>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title-center">MY WORK</h2>
+            <p class="section-subtitle">Showcasing strategic support and business transformation projects</p>
 
-    <!-- FAQ Section -->
-    <section class="faq" id="faq">
-        <div class="section-container">
-            <h2 class="section-title-center">FREQUENTLY ASKED QUESTIONS</h2>
-            <p class="section-subtitle">Everything you need to know about working together</p>
-            
-            <div class="faq-container">
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>What are your working hours and availability?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>I work Monday-Friday, 9am-6pm EAT (GMT+3) with same-day response to urgent requests. I'm also available for scheduled calls outside these hours when needed.</p>
+            <div class="portfolio-grid">
+                <div class="portfolio-card featured">
+                    <div class="portfolio-image">
+                        <img src="assets/project-1.jpg" alt="Project Management" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4DD4D4, #FFD700)';">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-tags">
+                                <span class="portfolio-tag">Management</span>
+                                <span class="portfolio-tag">Project Oversight</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Project Management</h3>
+                        <p class="portfolio-description">I oversee project timelines, assign tasks, manage deadlines, and
+ensure smooth team collaboration across platforms. I act as the
+point of contact between stakeholders, keeping everyone aligned
+and focused on deliverables.</p>
+                        <div class="portfolio-metrics">
+                            <div class="portfolio-metric">
+                                <span class="metric-number">40%</span>
+                                <span class="metric-label">Efficiency Increase</span>
+                            </div>
+                            <div class="portfolio-metric">
+                                <span class="metric-number">$25K</span>
+                                <span class="metric-label">Monthly Savings</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tech">
+                            <span class="tech-item">Trello</span>
+                            <span class="tech-item">Notion</span>
+                            <span class="tech-item">Google Workspace</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>How do we communicate and stay connected?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>We primarily use Slack for day-to-day communication, with weekly video check-ins. I also provide daily task updates and monthly reports through your preferred project management tool.</p>
+
+                <div class="portfolio-card">
+                    <div class="portfolio-image">
+                        <img src="assets/project-2.jpg" alt="SaaS Startup Launch" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #FF6B6B, #FFE66D)';">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-tags">
+                                <span class="portfolio-tag">SaaS</span>
+                                <span class="portfolio-tag">Operations</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">SaaS Startup Launch Support</h3>
+                        <p class="portfolio-description">Provided comprehensive operational support for a fintech startup's market launch, managing customer onboarding and internal processes.</p>
+                        <div class="portfolio-metrics">
+                            <div class="portfolio-metric">
+                                <span class="metric-number">500+</span>
+                                <span class="metric-label">Users Onboarded</span>
+                            </div>
+                            <div class="portfolio-metric">
+                                <span class="metric-number">3 months</span>
+                                <span class="metric-label">To Launch</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tech">
+                            <span class="tech-item">Notion</span>
+                            <span class="tech-item">Slack</span>
+                            <span class="tech-item">Stripe</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>What if I need more hours than my package includes?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Additional hours can be purchased at a prorated rate, or you can upgrade to the next package tier. We'll discuss your needs during our monthly strategy calls.</p>
+
+                <div class="portfolio-card">
+                    <div class="portfolio-image">
+                        <img src="assets/project-3.jpg" alt="Executive Calendar Management" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #A8E6CF, #88D8C0)';">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-tags">
+                                <span class="portfolio-tag">Executive</span>
+                                <span class="portfolio-tag">Productivity</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Executive Calendar Management</h3>
+                        <p class="portfolio-description">Optimized scheduling and time management for a CEO, implementing strategic planning systems and priority-based task organization.</p>
+                        <div class="portfolio-metrics">
+                            <div class="portfolio-metric">
+                                <span class="metric-number">15hrs</span>
+                                <span class="metric-label">Weekly Savings</span>
+                            </div>
+                            <div class="portfolio-metric">
+                                <span class="metric-number">Zero</span>
+                                <span class="metric-label">Missed Meetings</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tech">
+                            <span class="tech-item">Google Calendar</span>
+                            <span class="tech-item">Notion</span>
+                            <span class="tech-item">Zoom</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>How quickly can we get started?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>After our initial consultation, onboarding typically takes 3-5 business days. This includes setting up access, understanding your systems, and creating our workflow protocols.</p>
+
+                <div class="portfolio-card">
+                    <div class="portfolio-image">
+                        <img src="assets/project-4.jpg" alt="Content Strategy Implementation" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #FFB3BA, #FFDFBA)';">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-tags">
+                                <span class="portfolio-tag">Content</span>
+                                <span class="portfolio-tag">Marketing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Content Strategy Implementation</h3>
+                        <p class="portfolio-description">Developed and executed a comprehensive content strategy for a consulting firm, managing social media presence and lead generation campaigns.</p>
+                        <div class="portfolio-metrics">
+                            <div class="portfolio-metric">
+                                <span class="metric-number">300%</span>
+                                <span class="metric-label">Engagement Increase</span>
+                            </div>
+                            <div class="portfolio-metric">
+                                <span class="metric-number">50+</span>
+                                <span class="metric-label">Leads Generated</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tech">
+                            <span class="tech-item">LinkedIn</span>
+                            <span class="tech-item">Canva</span>
+                            <span class="tech-item">Buffer</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>What tools and software do I need to provide access to?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>This depends on your needs, but typically includes: email, calendar, project management tools (Asana/ClickUp), CRM, and any platforms specific to your business. All access is handled with strict security protocols.</p>
+
+                <div class="portfolio-card">
+                    <div class="portfolio-image">
+                        <img src="assets/project-5.jpg" alt="Team Workflow Automation" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #DDA0DD, #98D8C8)';">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-tags">
+                                <span class="portfolio-tag">Automation</span>
+                                <span class="portfolio-tag">Team</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Team Workflow Automation</h3>
+                        <p class="portfolio-description">Automated repetitive tasks and streamlined communication for a remote team, implementing project management tools and automated reporting systems.</p>
+                        <div class="portfolio-metrics">
+                            <div class="portfolio-metric">
+                                <span class="metric-number">60%</span>
+                                <span class="metric-label">Time Reduction</span>
+                            </div>
+                            <div class="portfolio-metric">
+                                <span class="metric-number">100%</span>
+                                <span class="metric-label">Task Visibility</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tech">
+                            <span class="tech-item">Asana</span>
+                            <span class="tech-item">Slack</span>
+                            <span class="tech-item">Zapier</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>What is your cancellation policy?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>All packages require 30 days notice for cancellation. Unused hours in your package are non-refundable but can be used during your notice period.</p>
+
+                <div class="portfolio-card">
+                    <div class="portfolio-image">
+                        <img src="assets/project-6.jpg" alt="Business Process Documentation" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #F7DC6F, #BB8FCE)';">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-tags">
+                                <span class="portfolio-tag">Documentation</span>
+                                <span class="portfolio-tag">Processes</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>Do you sign NDAs and confidentiality agreements?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Absolutely. All clients receive a standard confidentiality agreement, and I'm happy to sign your company's NDA as well. Your data security and privacy are my top priorities.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>How do you track time and tasks?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>I use time-tracking software (Toggl or Harvest) for all billable hours and maintain detailed task logs in your project management system. You'll receive weekly time summaries and monthly reports.</p>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Business Process Documentation</h3>
+                        <p class="portfolio-description">Created comprehensive standard operating procedures and training materials for a growing agency, ensuring knowledge transfer and operational consistency.</p>
+                        <div class="portfolio-metrics">
+                            <div class="portfolio-metric">
+                                <span class="metric-number">25</span>
+                                <span class="metric-label">SOPs Created</span>
+                            </div>
+                            <div class="portfolio-metric">
+                                <span class="metric-number">90%</span>
+                                <span class="metric-label">Faster Onboarding</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tech">
+                            <span class="tech-item">Notion</span>
+                            <span class="tech-item">Loom</span>
+                            <span class="tech-item">Miro</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -732,17 +828,17 @@
                     <form class="contact-form" id="contactForm">
                         <div class="form-group">
                             <label for="name">Full Name *</label>
-                            <input type="text" id="name" name="name" required placeholder="John Doe">
+                            <input type="text" id="name" name="name" required placeholder="John Doe" autocomplete="name">
                         </div>
                         
                         <div class="form-group">
                             <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required placeholder="john@company.com">
+                            <input type="email" id="email" name="email" required placeholder="john@company.com" autocomplete="email">
                         </div>
                         
                         <div class="form-group">
                             <label for="company">Company</label>
-                            <input type="text" id="company" name="company" placeholder="Your Company Name">
+                            <input type="text" id="company" name="company" placeholder="Your Company Name" autocomplete="organization">
                         </div>
                         
                         <div class="form-group">
@@ -864,8 +960,8 @@
     }
     </script>
     
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <!-- Google Analytics 4 - Configure GA_MEASUREMENT_ID before enabling -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -874,5 +970,6 @@
             'custom_map': {'dimension1': 'page_location'}
         });
     </script>
+    <script src="script.js"></script>
 </body>
 </html>

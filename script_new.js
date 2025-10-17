@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile Navigation Toggle
     const toggleMobileNav = () => {
         const isActive = hamburgerBtn.classList.contains('active');
-        
+
         if (isActive) {
             // Close mobile nav
             hamburgerBtn.classList.remove('active');
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Anchor doesn't exist on current page, redirect to home page with hash
                         const currentPath = window.location.pathname;
                         const isOnSubpage = currentPath !== '/' && !currentPath.endsWith('index.html');
-                        
+
                         if (isOnSubpage) {
                             // Redirect to home page with the hash
                             window.location.href = `index.html${href}`;
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const handleNavigationScroll = () => {
         const currentScrollY = window.scrollY;
         const navigation = document.querySelector('.navigation');
-        
+
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
             // Scrolling down - hide nav
             navigation.classList.add('hidden');
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Scrolling up - show nav
             navigation.classList.remove('hidden');
         }
-        
+
         lastScrollY = currentScrollY;
         ticking = false;
     };
@@ -138,27 +138,27 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
         }, { passive: false });
     }
-    
+
     // ============================================
     // SMOOTH SCROLLING FOR NAVIGATION LINKS
     // ============================================
     const navLinks = document.querySelectorAll('.nav-link, .hero-cta, .footer-link');
-    
+
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            
+
             if (href && href.startsWith('#')) {
                 e.preventDefault();
                 const targetId = href.substring(1);
                 const targetElement = document.getElementById(targetId);
-                
+
                 if (targetElement) {
                     // Anchor exists on current page, scroll to it
                     const navigation = document.querySelector('.navigation');
                     const navHeight = navigation ? navigation.offsetHeight : 0;
                     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-                    
+
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Anchor doesn't exist on current page, redirect to home page with hash
                     const currentPath = window.location.pathname;
                     const isOnSubpage = currentPath !== '/' && !currentPath.endsWith('index.html');
-                    
+
                     if (isOnSubpage) {
                         // Redirect to home page with the hash
                         window.location.href = `index.html${href}`;
@@ -178,20 +178,49 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ============================================
+    // FAQ ACCORDION - CLEAN REBUILD
+    // ============================================
+    const faqQuestions = document.querySelectorAll('.faq-question');
+
+    console.log('Found FAQ questions:', faqQuestions.length);
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            console.log('FAQ question clicked');
+            const faqItem = this.closest('.faq-item');
+            const answer = faqItem.querySelector('.faq-answer');
+
+            if (!faqItem || !answer) {
+                console.error('FAQ elements not found!');
+                return;
+            }
+
+            // Toggle the active state
+            faqItem.classList.toggle('active');
+
+            // Update aria-expanded
+            const isExpanded = faqItem.classList.contains('active');
+            this.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+
+            console.log('FAQ item active:', isExpanded);
+        });
+    });
+
+    // ============================================
     // METRICS COUNTER ANIMATION
     // ============================================
     const metricNumbers = document.querySelectorAll('.metric-number');
     let metricsAnimated = false;
 
-    console.log('Found metric numbers:', metricNumbers.length); // Debug log
+    console.log('Found metric numbers:', metricNumbers.length);
 
     const animateCounter = (element, target) => {
-        console.log('Animating counter for target:', target); // Debug log
+        console.log('Animating counter for target:', target);
         const duration = 2000; // 2 seconds
         const start = 0;
         const increment = target / (duration / 16); // 60 FPS
         let current = start;
-        
+
         const updateCounter = () => {
             current += increment;
             if (current < target) {
@@ -201,20 +230,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.textContent = target;
             }
         };
-        
+
         updateCounter();
     };
 
     const observerOptions = {
-        threshold: 0.1, // Changed from 0.5 to 0.1 for easier triggering
-        rootMargin: '0px 0px -50px 0px' // Added negative margin to trigger earlier
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
     };
 
     const metricsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            console.log('Metrics section intersection:', entry.isIntersecting); // Debug log
+            console.log('Metrics section intersection:', entry.isIntersecting);
             if (entry.isIntersecting && !metricsAnimated) {
-                console.log('Starting metrics animation'); // Debug log
+                console.log('Starting metrics animation');
                 metricsAnimated = true;
                 metricNumbers.forEach(metric => {
                     const target = parseInt(metric.getAttribute('data-target'));
@@ -228,67 +257,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const metricsSection = document.querySelector('.metrics');
     if (metricsSection) {
-        console.log('Metrics section found, observing...'); // Debug log
+        console.log('Metrics section found, observing...');
         metricsObserver.observe(metricsSection);
     } else {
-        console.log('Metrics section not found!'); // Debug log
-    }
-
-    // Reset animation when user scrolls away and back (for better UX)
-    const resetMetricsAnimation = () => {
-        if (!isInViewport(metricsSection) && metricsAnimated) {
-            metricsAnimated = false;
-            metricNumbers.forEach(metric => {
-                const target = parseInt(metric.getAttribute('data-target'));
-                if (target) {
-                    metric.textContent = '0';
-                }
-            });
-        }
-    };
-
-    // Check visibility on scroll for animation reset
-    window.addEventListener('scroll', throttle(resetMetricsAnimation, 100));
-
-    // ============================================
-    // MOBILE OPTIMIZATION: Touch Event Improvements
-    // ============================================
-
-    // Detect if user is on mobile/touch device
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    if (isTouchDevice) {
-        document.body.classList.add('touch-device');
-
-        // Improve touch response for interactive elements
-        const touchElements = document.querySelectorAll('.service-card, .testimonial-card, .package-card, .tool-badge');
-
-        touchElements.forEach(element => {
-            element.addEventListener('touchstart', function() {
-                this.style.transform = 'scale(0.98)';
-            }, { passive: true });
-
-            element.addEventListener('touchend', function() {
-                this.style.transform = '';
-            }, { passive: true });
-        });
+        console.log('Metrics section not found!');
     }
 
     // ============================================
     // CONTACT FORM HANDLING
     // ============================================
     const contactForm = document.getElementById('contactForm');
-    
+
     if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             // Honeypot spam check
             if (document.getElementById('website').value !== '') {
                 console.log('Spam detected');
                 return false;
             }
-            
+
             // Get form data
             const formData = {
                 name: document.getElementById('name').value,
@@ -297,15 +286,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 package: document.getElementById('package').value,
                 message: document.getElementById('message').value
             };
-            
+
             const submitBtn = this.querySelector('.form-submit-btn');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
-            
+
             try {
-                // IMPORTANT: Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
-                // Get your form ID from https://formspree.io/ after creating a form
                 const response = await fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
                     method: 'POST',
                     headers: {
@@ -313,11 +300,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     body: JSON.stringify(formData)
                 });
-                
+
                 if (response.ok) {
                     alert('Thank you! Your message has been sent successfully. I\'ll respond within 24 hours.');
                     this.reset();
-                    
+
                     // Scroll to top
                     window.scrollTo({
                         top: 0,
@@ -343,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const fadeInObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -352,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }, fadeInObserverOptions);
-    
+
     // Apply fade-in to sections only if IntersectionObserver is supported
     if ('IntersectionObserver' in window) {
         const sections = document.querySelectorAll('section');
@@ -371,25 +358,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Fallback: Ensure sections are visible if IntersectionObserver is not supported
         console.log('IntersectionObserver not supported - showing sections immediately');
     }
-    
+
     // Ensure metrics section is visible for counter animation
     if (metricsSection) {
         metricsSection.style.opacity = '1';
         metricsSection.style.transform = 'none';
     }
-    
-    // Additional fallback: Ensure critical sections are visible after a short delay
-    setTimeout(() => {
-        const sections = document.querySelectorAll('section');
-        sections.forEach(section => {
-            if (window.getComputedStyle(section).opacity === '0') {
-                section.style.opacity = '1';
-                section.style.transform = 'none';
-                section.style.transition = 'none';
-                console.log('Applied fallback visibility for section:', section.id || section.className);
-            }
-        });
-    }, 100);
 
     // ============================================
     // TOOLS CAROUSEL FUNCTIONALITY
@@ -458,6 +432,11 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCarousel();
     }
 
+    // ============================================
+    // PACKAGE BUTTONS
+    // ============================================
+    const packageButtons = document.querySelectorAll('.package-cta');
+
     packageButtons.forEach(button => {
         button.addEventListener('click', function() {
             const packageCard = this.closest('.package-card');
@@ -505,10 +484,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (prefersReducedMotion) {
         // Disable animations for users who prefer reduced motion
-        // But be more selective - only disable section transitions, not all animations
-        const animatedSections = document.querySelectorAll('section');
-        animatedSections.forEach(section => {
-            section.style.transition = 'none';
+        document.querySelectorAll('*').forEach(element => {
+            element.style.transition = 'none';
+            element.style.animation = 'none';
         });
 
         // Show all sections immediately (don't rely on IntersectionObserver for visibility)
@@ -519,9 +497,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 section.style.transform = 'none';
             });
         }
-
-        // Log that reduced motion is active for debugging
-        console.log('Reduced motion preference detected - section animations disabled');
     }
 
     // ============================================
@@ -558,17 +533,56 @@ document.addEventListener('DOMContentLoaded', function() {
             imageObserver.observe(img);
         });
     }
-    
+
+    // ============================================
+    // MOBILE OPTIMIZATION: Touch Event Improvements
+    // ============================================
+
+    // Detect if user is on mobile/touch device
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) {
+        document.body.classList.add('touch-device');
+
+        // Improve touch response for interactive elements
+        const touchElements = document.querySelectorAll('.service-card, .testimonial-card, .package-card, .tool-badge');
+
+        touchElements.forEach(element => {
+            element.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            }, { passive: true });
+
+            element.addEventListener('touchend', function() {
+                this.style.transform = '';
+            }, { passive: true });
+        });
+    }
+
+    // ============================================
+    // MOBILE OPTIMIZATION: Connection-Aware Loading
+    // ============================================
+
+    // Check for slow connections and adjust accordingly
+    if ('connection' in navigator) {
+        const connection = navigator.connection;
+
+        if (connection.effectiveType === '2g' || connection.effectiveType === 'slow-2g') {
+            // Disable animations on slow connections
+            document.body.classList.add('reduced-motion');
+            console.log('Slow connection detected - animations reduced');
+        }
+    }
+
     // ============================================
     // MOBILE OPTIMIZATION: Viewport Height Fix for Mobile Browsers
     // ============================================
-    
+
     // Fix for mobile browsers where 100vh includes address bar
     function setViewportHeight() {
         const vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
-    
+
     setViewportHeight();
     window.addEventListener('resize', debounce(setViewportHeight, 250));
     window.addEventListener('orientationchange', setViewportHeight);
