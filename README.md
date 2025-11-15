@@ -172,12 +172,6 @@ git push origin main
 - **Forms**: Integrated form handling
 - **Analytics**: Built-in site analytics
 
-## 📞 Contact & Support
-
-For questions about deployment or customization:
-- **Email**: nairobistonks@gmail.com
-- **LinkedIn**: Connect via profile links
-
 ## 🎉 Success Metrics Achieved
 
 ✅ **Performance**: 95+ Lighthouse Performance Score
